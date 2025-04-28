@@ -159,7 +159,7 @@ const PredictPage = () => {
                     <div className="mt-4 text-xs text-muted-foreground border-t border-border pt-2">
                       <p>
                         The sentiment score represents market mood and news sentiment,
-                        which influences our LSTM prediction model.
+                        which influences our hybrid prediction model.
                       </p>
                     </div>
                   </div>
@@ -179,9 +179,10 @@ const PredictPage = () => {
                       </div>
                     </div>
                     <div className="mt-4 text-sm text-muted-foreground">
-                      <p>The prediction model will integrate:</p>
+                      <p>The hybrid prediction model will integrate:</p>
                       <ul className="list-disc list-inside pl-2 mt-2 space-y-1">
                         <li>Market sentiment analysis</li>
+                        <li>ARIMA statistical forecasting</li>
                         <li>LSTM deep learning predictions</li>
                       </ul>
                     </div>
