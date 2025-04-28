@@ -40,8 +40,13 @@ const AnimatedBackground: React.FC = () => {
         this.speedX = Math.random() * 0.5 - 0.25;
         this.speedY = Math.random() * 0.5 - 0.25;
         
-        // Colors in the Solana palette
-        const colors = ['rgba(124, 58, 237, 0.7)', 'rgba(20, 241, 149, 0.7)', 'rgba(255, 77, 157, 0.7)', 'rgba(14, 165, 233, 0.7)'];
+        // Updated colors with more magenta and teal
+        const colors = [
+          'rgba(213, 70, 237, 0.7)',   // Magenta
+          'rgba(139, 92, 246, 0.7)',    // Purple
+          'rgba(20, 241, 149, 0.7)',    // Teal
+          'rgba(255, 77, 157, 0.7)',    // Pink
+        ];
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
       
@@ -135,22 +140,22 @@ const AnimatedBackground: React.FC = () => {
       }
     }
 
-    // Create waves
+    // Create waves with updated colors
     const waves = [
-      new Wave('124, 58, 237', 0.05),   // Purple
-      new Wave('14, 165, 233', 0.03),   // Blue
-      new Wave('20, 241, 149', 0.02),   // Teal
-      new Wave('255, 77, 157', 0.04),   // Pink
+      new Wave('213, 70, 237', 0.05),   // Magenta
+      new Wave('139, 92, 246', 0.03),   // Purple
+      new Wave('20, 241, 149', 0.04),   // Teal
+      new Wave('255, 77, 157', 0.02),   // Pink
     ];
     
-    // Animation function
+    // Animation function with darker background
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Gradient background
+      // Darker gradient background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#0a0a0a');
-      gradient.addColorStop(1, '#121212');
+      gradient.addColorStop(0, '#000000');   // Pure black at the top
+      gradient.addColorStop(1, '#0a0a0a');   // Very dark gray at the bottom
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       

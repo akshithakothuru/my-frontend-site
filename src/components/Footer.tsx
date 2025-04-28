@@ -5,11 +5,11 @@ const Footer = () => {
   const year = new Date().getFullYear();
   
   return (
-    <footer className="w-full bg-card/60 backdrop-blur-md py-6 px-6 border-t border-white/5">
+    <footer className="w-full bg-black/60 backdrop-blur-md py-6 px-6 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-primary/90 flex items-center justify-center shadow-glow animate-pulse">
+            <div className="h-8 w-8 rounded-full bg-accent/90 flex items-center justify-center shadow-glow animate-pulse">
               <span className="text-white font-bold text-xs">MV</span>
             </div>
             <p>MarketVision Insights Hub | Stock Prediction & Analysis</p>

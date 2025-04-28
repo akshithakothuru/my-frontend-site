@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -25,7 +26,7 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#0ea5e9',
+					DEFAULT: '#14F195', // Teal as primary
 					foreground: '#f8fafc'
 				},
 				secondary: {
@@ -41,7 +42,7 @@ export default {
 					foreground: '#cbd5e1'
 				},
 				accent: {
-					DEFAULT: '#8b5cf6',
+					DEFAULT: '#D946EF', // Magenta as accent
 					foreground: '#f8fafc'
 				},
 				popover: {
@@ -53,7 +54,7 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				success: {
-					DEFAULT: '#10b981',
+					DEFAULT: '#14F195', // Teal as success
 					foreground: '#f8fafc'
 				}
 			},

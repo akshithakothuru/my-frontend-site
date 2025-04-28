@@ -7,16 +7,16 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%; /* Dark charcoal */
+    --background: 222 47% 5%; /* Darker background */
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 11%;
+    --card: 222 47% 5%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 11%;
+    --popover: 222 47% 5%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 199 89% 48%; /* Electric blue */
+    --primary: 159 89% 48%; /* Teal */
     --primary-foreground: 0 0% 98%;
 
     --secondary: 217 33% 17%; /* Dark slate */
@@ -25,7 +25,7 @@
     --muted: 215 25% 27%; /* Darker slate */
     --muted-foreground: 217 19% 80%;
 
-    --accent: 265 89% 66%; /* Purple accent */
+    --accent: 293 90% 65%; /* Magenta accent */
     --accent-foreground: 0 0% 98%;
 
     --success: 158 64% 40%; /* Green */
@@ -36,7 +36,7 @@
 
     --border: 216 34% 17%;
     --input: 216 34% 17%;
-    --ring: 199 89% 48%;
+    --ring: 293 90% 65%; /* Magenta ring */
 
     --radius: 8px;
   }
@@ -48,7 +48,7 @@
 
   body {
     @apply bg-background text-foreground font-poppins;
-    background-color: #0a0a0a; /* Deep black as requested */
+    background-color: #000000; /* Pure black background */
     overflow-x: hidden;
     min-height: 100vh;
   }
@@ -64,21 +64,21 @@
   
   .hover-lift:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(130, 70, 255, 0.4);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(217, 70, 239, 0.5);
   }
   
   .gradient-text {
-    @apply bg-gradient-to-r from-primary via-accent to-success bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-accent to-[#8B5CF6] bg-clip-text text-transparent;
   }
   
   .glass-card {
     @apply backdrop-blur-md bg-secondary/30 border border-white/10;
-    box-shadow: 0 0 20px rgba(130, 70, 255, 0.2);
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
   
   .glass-card:hover {
-    box-shadow: 0 0 30px rgba(130, 70, 255, 0.4);
+    box-shadow: 0 0 30px rgba(217, 70, 239, 0.4);
     transform: translateY(-2px);
   }
   
@@ -88,15 +88,15 @@
   }
   
   .neon-glow {
-    box-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 0 0 20px rgba(14, 165, 233, 0.3);
+    box-shadow: 0 0 10px rgba(20, 241, 149, 0.5), 0 0 20px rgba(20, 241, 149, 0.3);
   }
   
   .success-glow {
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 10px rgba(20, 241, 149, 0.5), 0 0 20px rgba(20, 241, 149, 0.3);
   }
   
   .accent-glow {
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 10px rgba(217, 70, 239, 0.5), 0 0 20px rgba(217, 70, 239, 0.3);
   }
   
   /* Floating animation */
@@ -122,7 +122,7 @@
   }
 }
 
-/* Update existing animations */
+/* Keep existing animations */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -144,7 +144,6 @@
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 10px rgba(130, 70, 255, 0.3); }
-  50% { box-shadow: 0 0 25px rgba(130, 70, 255, 0.6); }
+  0%, 100% { box-shadow: 0 0 10px rgba(217, 70, 239, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(217, 70, 239, 0.6); }
 }
-
