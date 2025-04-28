@@ -9,12 +9,14 @@ import PredictPage from "./pages/PredictPage";
 import ResultsPage from "./pages/ResultsPage";
 import SentimentPage from "./pages/SentimentPage";
 import NotFound from "./pages/NotFound";
+import AnimatedBackground from "./components/AnimatedBackground";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <AnimatedBackground />
       <Toaster />
       <Sonner />
       <BrowserRouter>
