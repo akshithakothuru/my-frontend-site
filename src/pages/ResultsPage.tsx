@@ -168,7 +168,7 @@ const ResultsPage = () => {
           <div className="text-center">
             <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <h2 className="text-xl font-medium gradient-text">Processing Prediction Results</h2>
-            <p className="text-muted-foreground mt-2">Integrating sentiment analysis with ARIMA-LSTM models...</p>
+            <p className="text-muted-foreground mt-2">Integrating sentiment analysis with LSTM model...</p>
           </div>
         </main>
         <Footer />
@@ -223,7 +223,7 @@ const ResultsPage = () => {
                     predictionData.sentiment >= 0.4 ? 'bg-accent/20 text-accent' : 
                     'bg-destructive/20 text-destructive'
                   }`}>
-                    Sentiment: {Math.round(predictionData.sentiment * 100)}%
+                    Sentiment Input: {Math.round(predictionData.sentiment * 100)}%
                   </div>
                   
                   <div className="px-3 py-1 rounded-full bg-primary/20 text-primary text-sm font-medium">
@@ -236,7 +236,7 @@ const ResultsPage = () => {
             <Card className="glass-card p-6 mb-8 animate-scale-in">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <ChartLine className="h-5 w-5 text-primary" />
-                Stock Price Prediction Chart
+                LSTM Price Prediction Chart
               </h2>
               
               <div className={`h-[350px] transition-opacity duration-1000 ${animateChart ? 'opacity-100' : 'opacity-0'}`}>
@@ -412,7 +412,7 @@ const ResultsPage = () => {
                       <Info className="h-4 w-4 mt-0.5 min-w-4 text-muted-foreground" />
                       <p>
                         The R² score indicates how well the model's predictions match actual historical data.
-                        Our hybrid model integrates sentiment analysis with traditional prediction methods for improved accuracy.
+                        Our model integrates sentiment analysis with deep learning LSTM networks for improved accuracy.
                       </p>
                     </div>
                   </div>
@@ -446,7 +446,7 @@ const ResultsPage = () => {
                   
                   <div className="mt-6 text-sm text-muted-foreground">
                     <p>
-                      This prediction incorporates sentiment analysis (score: {Math.round(predictionData.sentiment * 100)}%) from news and social media as a key input to the ARIMA-LSTM hybrid model.
+                      This prediction incorporates sentiment analysis (score: {Math.round(predictionData.sentiment * 100)}%) from news and social media as a key input to the LSTM deep learning model.
                     </p>
                   </div>
                 </Card>

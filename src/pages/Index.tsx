@@ -32,10 +32,10 @@ const Index = () => {
                   Market<span className="gradient-text">Vision</span> Insights Hub
                 </h1>
                 <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl">
-                  Predicting Tomorrow's Stock Prices Today
+                  AI-Powered Stock Forecasting
                 </p>
                 <p className="text-lg text-muted-foreground max-w-2xl">
-                  Advanced stock forecasting using sentiment analysis, ARIMA statistical models, and LSTM deep learning networks.
+                  Advanced stock forecasting using sentiment analysis and LSTM deep learning networks.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                   <Button asChild size="lg" className="bg-gradient-to-r from-primary to-accent hover:brightness-110 transition-all">
@@ -120,9 +120,9 @@ const Index = () => {
         {/* How It Works Section */}
         <section className="py-16 bg-secondary/30 border-y border-border">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 gradient-text">How Our Hybrid Model Works</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 gradient-text">How Our Model Works</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
               <div className="relative">
                 <div className="glass-card p-6 animate-float hover-lift">
                   <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
@@ -140,27 +140,12 @@ const Index = () => {
               
               <div className="relative">
                 <div className="glass-card p-6 animate-float hover-lift">
-                  <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-                    <FileCog className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">2. Hybrid Modeling</h3>
-                  <p className="text-muted-foreground">
-                    Our systems combine traditional ARIMA statistical models with deep learning LSTM networks.
-                  </p>
-                </div>
-                <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                  <ArrowRight className="h-8 w-8 text-primary/30" />
-                </div>
-              </div>
-              
-              <div className="relative">
-                <div className="glass-card p-6 animate-float hover-lift">
                   <div className="h-12 w-12 rounded-full bg-success/20 flex items-center justify-center mb-4">
                     <ChartLine className="h-6 w-6 text-success" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">3. Price Prediction</h3>
+                  <h3 className="text-xl font-semibold mb-2">2. LSTM Prediction</h3>
                   <p className="text-muted-foreground">
-                    The integrated model generates 5-day forecasts with high accuracy R² scores.
+                    Our deep learning LSTM networks incorporate sentiment data to generate accurate stock price forecasts.
                   </p>
                 </div>
               </div>
@@ -190,7 +175,7 @@ const Index = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Price Prediction</h3>
                 <p className="text-muted-foreground">
-                  Hybrid ARIMA-LSTM model predicts stock prices for the next 5 trading days with high accuracy.
+                  LSTM deep learning model predicts stock prices for the next 5 trading days with high accuracy.
                 </p>
               </Card>
               
