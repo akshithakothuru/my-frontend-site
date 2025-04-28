@@ -1,113 +1,331 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowRight, BarChart, TrendingUp, ChartLine, FileText, AlertCircle } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const stockOptions = [
+  { value: 'MSFT', label: 'Microsoft (MSFT)' },
+  { value: 'TSLA', label: 'Tesla (TSLA)' },
+  { value: 'AAPL', label: 'Apple (AAPL)' },
+  { value: 'NFLX', label: 'Netflix (NFLX)' },
+  { value: 'GOOGL', label: 'Google (GOOGL)' },
+  { value: 'AMZN', label: 'Amazon (AMZN)' }
+];
+
+// Example sentiment data for visualization
+const sentimentData = {
+  'MSFT': {
+    score: 0.72,
+    label: 'Positive',
+    sources: {
+      news: 0.76,
+      social: 0.63,
+      analyst: 0.81,
+    },
+    keywords: ['Cloud', 'Azure', 'AI', 'Growth', 'Enterprise'],
+    newsHeadlines: [
+      { title: 'Microsoft Cloud Revenue Surges 28%', sentiment: 'positive' },
+      { title: 'Azure Gains Market Share Against AWS', sentiment: 'positive' },
+      { title: 'Microsoft Faces Antitrust Scrutiny', sentiment: 'negative' },
+    ]
+  },
+  'TSLA': {
+    score: 0.48,
+    label: 'Neutral',
+    sources: {
+      news: 0.42,
+      social: 0.52,
+      analyst: 0.47,
+    },
+    keywords: ['Production', 'China', 'Competition', 'Musk', 'EV'],
+    newsHeadlines: [
+      { title: 'Tesla Q1 Deliveries Beat Expectations', sentiment: 'positive' },
+      { title: 'New EV Competition Threatens Tesla Market Share', sentiment: 'negative' },
+      { title: 'Tesla Cuts Prices in China Again', sentiment: 'negative' },
+    ]
+  },
+  'AAPL': {
+    score: 0.84,
+    label: 'Very Positive',
+    sources: {
+      news: 0.82,
+      social: 0.89,
+      analyst: 0.76,
+    },
+    keywords: ['iPhone', 'Services', 'Growth', 'Innovation', 'Loyal'],
+    newsHeadlines: [
+      { title: 'Apple Services Revenue Hits New Record', sentiment: 'positive' },
+      { title: 'iPhone 15 Pro Demand Exceeds Expectations', sentiment: 'positive' },
+      { title: 'Apple AI Strategy Gains Momentum', sentiment: 'positive' },
+    ]
+  },
+  'NFLX': {
+    score: 0.35,
+    label: 'Slightly Negative',
+    sources: {
+      news: 0.31,
+      social: 0.42,
+      analyst: 0.32,
+    },
+    keywords: ['Subscribers', 'Content', 'Competition', 'Streaming', 'Ads'],
+    newsHeadlines: [
+      { title: 'Netflix Subscriber Growth Slows in Q2', sentiment: 'negative' },
+      { title: 'Competition Intensifies in Streaming Space', sentiment: 'negative' },
+      { title: 'New Netflix Original Shows Getting Mixed Reviews', sentiment: 'neutral' },
+    ]
+  },
+  'GOOGL': {
+    score: 0.62,
+    label: 'Positive',
+    sources: {
+      news: 0.58,
+      social: 0.64,
+      analyst: 0.66,
+    },
+    keywords: ['Search', 'Ads', 'Cloud', 'AI', 'Antitrust'],
+    newsHeadlines: [
+      { title: 'Google Search Market Share Remains Strong', sentiment: 'positive' },
+      { title: 'Google Cloud Growth Accelerates', sentiment: 'positive' },
+      { title: 'Antitrust Concerns Weigh on Google', sentiment: 'negative' },
+    ]
+  },
+  'AMZN': {
+    score: 0.55,
+    label: 'Neutral',
+    sources: {
+      news: 0.61,
+      social: 0.49,
+      analyst: 0.58,
+    },
+    keywords: ['E-commerce', 'AWS', 'Retail', 'Logistics', 'Prime'],
+    newsHeadlines: [
+      { title: 'Amazon AWS Revenue Growth Accelerates', sentiment: 'positive' },
+      { title: 'Retail Business Faces Margin Pressure', sentiment: 'negative' },
+      { title: 'Amazon Expands Same-Day Delivery Network', sentiment: 'positive' },
+    ]
+  }
+};
 
 const SentimentPage = () => {
-  const [currentStock] = useState(() => {
-    return sessionStorage.getItem('predictedStock') || 'AAPL';
-  });
+  const [selectedStock, setSelectedStock] = useState<string>('MSFT');
+  const [animateScore, setAnimateScore] = useState(false);
+  const [animateSources, setAnimateSources] = useState(false);
+  
+  useEffect(() => {
+    setAnimateScore(false);
+    setAnimateSources(false);
+    
+    const scoreTimer = setTimeout(() => {
+      setAnimateScore(true);
+    }, 300);
+    
+    const sourcesTimer = setTimeout(() => {
+      setAnimateSources(true);
+    }, 800);
+    
+    return () => {
+      clearTimeout(scoreTimer);
+      clearTimeout(sourcesTimer);
+    };
+  }, [selectedStock]);
+
+  const getSentimentColor = (score: number) => {
+    if (score >= 0.7) return 'text-success';
+    if (score >= 0.5) return 'text-primary';
+    if (score >= 0.4) return 'text-accent';
+    return 'text-destructive';
+  };
+  
+  const getSentimentBarColor = (score: number) => {
+    if (score >= 0.7) return 'bg-success';
+    if (score >= 0.5) return 'bg-primary';
+    if (score >= 0.4) return 'bg-accent';
+    return 'bg-destructive';
+  };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
-      <main className="flex-grow bg-gradient-to-br from-white to-secondary">
+      <main className="flex-grow">
         <section className="container px-4 py-12 md:py-16">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-              <Button asChild variant="outline" className="mb-4">
-                <Link to="/results" className="flex items-center gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Results
-                </Link>
-              </Button>
-              
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            <div className="mb-8 animate-slide-down">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
                 Market Sentiment Analysis
               </h1>
-              <p className="text-lg text-gray-600">
-                Understanding market sentiment for better investment decisions
+              <p className="text-lg text-muted-foreground">
+                Real-time sentiment analysis from news, social media, and analyst reports
               </p>
             </div>
             
-            <Card className="p-6 card-shadow mb-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <FileText className="h-5 w-5 text-primary" />
-                </div>
-                <h2 className="text-2xl font-semibold">
-                  {currentStock} Sentiment Overview
-                </h2>
-              </div>
-              
-              <div className="bg-secondary p-6 rounded-md mb-8">
-                <div className="text-center mb-8">
-                  <p className="text-lg mb-2">Overall Sentiment</p>
-                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 font-medium">
-                    Positive
-                  </div>
+            <div className="mb-8 animate-scale-in">
+              <Card className="glass-card p-6">
+                <div className="mb-6">
+                  <label className="text-sm font-medium mb-2 block">Select Stock for Sentiment Analysis</label>
+                  <Select value={selectedStock} onValueChange={setSelectedStock}>
+                    <SelectTrigger className="w-full md:w-72 bg-secondary border-primary/30 hover:border-primary transition-all">
+                      <SelectValue placeholder="Select a stock..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-secondary border-primary/30 text-foreground">
+                      {stockOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value} className="hover:bg-muted focus:bg-muted">
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div className="bg-white p-4 rounded-md shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 mb-2">News Sentiment</h3>
-                    <div className="text-2xl font-bold text-green-600">76%</div>
-                    <p className="text-xs text-gray-500">Based on recent news articles</p>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-6">
+                    <div className="bg-secondary/50 p-4 rounded-lg border border-border">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="font-semibold flex items-center gap-2">
+                          <BarChart className="h-5 w-5 text-accent" />
+                          Overall Sentiment
+                        </h3>
+                        <div className={`${getSentimentColor(sentimentData[selectedStock as keyof typeof sentimentData].score)} font-bold text-lg`}>
+                          {sentimentData[selectedStock as keyof typeof sentimentData].label}
+                        </div>
+                      </div>
+                      
+                      <p className="text-sm text-muted-foreground mb-2">Sentiment Score</p>
+                      <div className="h-4 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full ${getSentimentBarColor(sentimentData[selectedStock as keyof typeof sentimentData].score)} transition-all duration-1000 ease-out`}
+                          style={{ 
+                            width: animateScore ? 
+                              `${sentimentData[selectedStock as keyof typeof sentimentData].score * 100}%` : '0%' 
+                          }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex justify-between mt-1 text-xs text-muted-foreground">
+                        <span>0.0</span>
+                        <span>0.5</span>
+                        <span>1.0</span>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-secondary/50 p-4 rounded-lg border border-border">
+                      <h3 className="font-semibold mb-3">Sentiment by Source</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span>News Articles</span>
+                            <span className={getSentimentColor(sentimentData[selectedStock as keyof typeof sentimentData].sources.news)}>
+                              {Math.round(sentimentData[selectedStock as keyof typeof sentimentData].sources.news * 100)}%
+                            </span>
+                          </div>
+                          <div className="h-2 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full ${getSentimentBarColor(sentimentData[selectedStock as keyof typeof sentimentData].sources.news)} transition-all duration-1000 ease-out`}
+                              style={{ 
+                                width: animateSources ? 
+                                  `${sentimentData[selectedStock as keyof typeof sentimentData].sources.news * 100}%` : '0%' 
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span>Social Media</span>
+                            <span className={getSentimentColor(sentimentData[selectedStock as keyof typeof sentimentData].sources.social)}>
+                              {Math.round(sentimentData[selectedStock as keyof typeof sentimentData].sources.social * 100)}%
+                            </span>
+                          </div>
+                          <div className="h-2 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full ${getSentimentBarColor(sentimentData[selectedStock as keyof typeof sentimentData].sources.social)} transition-all duration-1000 ease-out`}
+                              style={{ 
+                                width: animateSources ? 
+                                  `${sentimentData[selectedStock as keyof typeof sentimentData].sources.social * 100}%` : '0%' 
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span>Analyst Reports</span>
+                            <span className={getSentimentColor(sentimentData[selectedStock as keyof typeof sentimentData].sources.analyst)}>
+                              {Math.round(sentimentData[selectedStock as keyof typeof sentimentData].sources.analyst * 100)}%
+                            </span>
+                          </div>
+                          <div className="h-2 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full ${getSentimentBarColor(sentimentData[selectedStock as keyof typeof sentimentData].sources.analyst)} transition-all duration-1000 ease-out`}
+                              style={{ 
+                                width: animateSources ? 
+                                  `${sentimentData[selectedStock as keyof typeof sentimentData].sources.analyst * 100}%` : '0%' 
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="bg-white p-4 rounded-md shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 mb-2">Social Media</h3>
-                    <div className="text-2xl font-bold text-blue-600">63%</div>
-                    <p className="text-xs text-gray-500">Twitter & Reddit analysis</p>
-                  </div>
-                  
-                  <div className="bg-white p-4 rounded-md shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 mb-2">Analyst Opinions</h3>
-                    <div className="text-2xl font-bold text-green-600">81%</div>
-                    <p className="text-xs text-gray-500">From financial analysts</p>
+                  <div className="space-y-6">
+                    <div className="bg-secondary/50 p-4 rounded-lg border border-border">
+                      <h3 className="font-semibold mb-3 flex items-center gap-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                        Key Topics & Keywords
+                      </h3>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {sentimentData[selectedStock as keyof typeof sentimentData].keywords.map((keyword, index) => (
+                          <span 
+                            key={index} 
+                            className="px-2 py-1 text-xs rounded-full bg-muted text-foreground hover:bg-primary/20 transition-colors"
+                          >
+                            {keyword}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="bg-secondary/50 p-4 rounded-lg border border-border">
+                      <h3 className="font-semibold mb-3">Latest News Headlines</h3>
+                      <div className="space-y-2">
+                        {sentimentData[selectedStock as keyof typeof sentimentData].newsHeadlines.map((headline, index) => (
+                          <div 
+                            key={index}
+                            className="p-2 rounded hover:bg-muted transition-colors flex justify-between items-center"
+                          >
+                            <p className="text-sm">{headline.title}</p>
+                            <span 
+                              className={`text-xs px-2 py-0.5 rounded-full ${
+                                headline.sentiment === 'positive' ? 'bg-success/20 text-success' : 
+                                headline.sentiment === 'negative' ? 'bg-destructive/20 text-destructive' : 
+                                'bg-accent/20 text-accent'
+                              }`}
+                            >
+                              {headline.sentiment}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="text-center p-8 border border-dashed border-gray-300 rounded-lg">
-                <div className="mb-4">
-                  <div className="h-16 w-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                    <FileText className="h-8 w-8 text-primary opacity-50" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-medium mb-2">Sentiment Analysis Charts Coming Soon</h3>
-                <p className="text-gray-600 max-w-md mx-auto mb-4">
-                  This section will soon display detailed sentiment analysis graphs, trends, and key topics affecting your selected stocks.
-                </p>
-                <p className="text-sm text-gray-500">
-                  Feature under development - Check back later!
-                </p>
-              </div>
-            </Card>
+              </Card>
+            </div>
             
-            <div className="bg-white p-6 rounded-lg card-shadow">
-              <h3 className="text-xl font-semibold mb-4">What is Sentiment Analysis?</h3>
-              <p className="text-gray-700 mb-4">
-                Sentiment analysis uses natural language processing and machine learning to identify and extract subjective information from text sources like news articles, social media posts, and analyst reports.
-              </p>
-              <p className="text-gray-700 mb-2">
-                By analyzing market sentiment alongside price predictions, investors can gain deeper insights into potential stock movements based on both technical analysis and market psychology.
-              </p>
-              <div className="mt-6 flex flex-col sm:flex-row gap-4 text-sm">
-                <div className="flex-1 p-4 bg-secondary rounded-md">
-                  <h4 className="font-medium mb-2">Positive Sentiment</h4>
-                  <p className="text-gray-600">Often correlates with upward price movements and investor confidence</p>
-                </div>
-                <div className="flex-1 p-4 bg-secondary rounded-md">
-                  <h4 className="font-medium mb-2">Negative Sentiment</h4>
-                  <p className="text-gray-600">May indicate upcoming market corrections or downward trends</p>
-                </div>
-              </div>
+            <div className="flex justify-center mt-8 animate-fade-in">
+              <Button asChild className="bg-gradient-to-r from-primary to-accent hover:brightness-110 transition-all">
+                <Link to="/predict" className="flex items-center gap-2">
+                  <ChartLine className="h-5 w-5" />
+                  <span>Proceed to Price Prediction</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
