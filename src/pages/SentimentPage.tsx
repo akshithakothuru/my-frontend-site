@@ -5,8 +5,10 @@ import Footer from '../components/Footer';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { ArrowRight, BarChart, TrendingUp, ChartLine, FileText, AlertCircle } from "lucide-react";
+import { ArrowRight, BarChart, TrendingUp, ChartLine, FileText, AlertCircle, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 const stockOptions = [
   { value: 'MSFT', label: 'Microsoft (MSFT)' },
@@ -17,8 +19,8 @@ const stockOptions = [
   { value: 'AMZN', label: 'Amazon (AMZN)' }
 ];
 
-// Example sentiment data for visualization
-const sentimentData = {
+// This data will be shown initially and when API is unavailable
+const fallbackSentimentData = {
   'MSFT': {
     score: 0.72,
     label: 'Positive',
@@ -115,8 +117,14 @@ const SentimentPage = () => {
   const [selectedStock, setSelectedStock] = useState<string>('MSFT');
   const [animateScore, setAnimateScore] = useState(false);
   const [animateSources, setAnimateSources] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [backendUrl, setBackendUrl] = useState('http://localhost:8000');
+  const [sentimentData, setSentimentData] = useState(fallbackSentimentData);
+  const [showConfig, setShowConfig] = useState(false);
+  const { toast } = useToast();
   
   useEffect(() => {
+    // Reset animations when stock changes
     setAnimateScore(false);
     setAnimateSources(false);
     
@@ -133,6 +141,53 @@ const SentimentPage = () => {
       clearTimeout(sourcesTimer);
     };
   }, [selectedStock]);
+
+  const fetchSentimentData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${backendUrl}/analyze-sentiment?ticker=${selectedStock}`);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      // Update with real data from backend
+      setSentimentData(prev => ({
+        ...prev,
+        [selectedStock]: {
+          ...prev[selectedStock as keyof typeof prev],
+          score: data.sentiment_score || prev[selectedStock as keyof typeof prev].score,
+          label: getSentimentLabel(data.sentiment_score),
+          sources: data.sources || prev[selectedStock as keyof typeof prev].sources,
+          newsHeadlines: data.headlines || prev[selectedStock as keyof typeof prev].newsHeadlines
+        }
+      }));
+      
+      toast({
+        title: "Sentiment Analysis Complete",
+        description: `Successfully analyzed sentiment for ${selectedStock}`,
+      });
+    } catch (error) {
+      console.error('Error fetching sentiment data:', error);
+      toast({
+        title: "API Connection Error",
+        description: "Could not connect to sentiment analysis backend. Using fallback data.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getSentimentLabel = (score: number) => {
+    if (score >= 0.7) return 'Very Positive';
+    if (score >= 0.5) return 'Positive';
+    if (score >= 0.4) return 'Neutral';
+    if (score >= 0.2) return 'Slightly Negative';
+    return 'Negative';
+  };
 
   const getSentimentColor = (score: number) => {
     if (score >= 0.7) return 'text-success';
@@ -166,20 +221,78 @@ const SentimentPage = () => {
             
             <div className="mb-8 animate-scale-in">
               <Card className="glass-card p-6">
-                <div className="mb-6">
-                  <label className="text-sm font-medium mb-2 block">Select Stock for Sentiment Analysis</label>
-                  <Select value={selectedStock} onValueChange={setSelectedStock}>
-                    <SelectTrigger className="w-full md:w-72 bg-secondary border-primary/30 hover:border-primary transition-all">
-                      <SelectValue placeholder="Select a stock..." />
-                    </SelectTrigger>
-                    <SelectContent className="bg-secondary border-primary/30 text-foreground">
-                      {stockOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value} className="hover:bg-muted focus:bg-muted">
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="mb-6 space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Select Stock for Sentiment Analysis</label>
+                    <Select value={selectedStock} onValueChange={setSelectedStock}>
+                      <SelectTrigger className="w-full md:w-72 bg-secondary border-primary/30 hover:border-primary transition-all">
+                        <SelectValue placeholder="Select a stock..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-secondary border-primary/30 text-foreground">
+                        {stockOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value} className="hover:bg-muted focus:bg-muted">
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={fetchSentimentData}
+                      className="bg-primary hover:bg-primary/90 transition-all"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <BarChart className="h-4 w-4 mr-2" />
+                          Analyze Sentiment
+                        </>
+                      )}
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowConfig(!showConfig)}
+                      className="border-primary/30"
+                    >
+                      {showConfig ? 'Hide Config' : 'API Config'}
+                    </Button>
+                  </div>
+                  
+                  {showConfig && (
+                    <div className="p-3 border border-border rounded-md bg-secondary/30">
+                      <label className="text-sm font-medium block mb-1">Backend API URL</label>
+                      <div className="flex gap-2">
+                        <Input 
+                          value={backendUrl} 
+                          onChange={(e) => setBackendUrl(e.target.value)}
+                          placeholder="http://localhost:8000"
+                          className="bg-background/50"
+                        />
+                        <Button 
+                          variant="outline" 
+                          onClick={() => {
+                            toast({
+                              title: "API URL Updated",
+                              description: `Set to ${backendUrl}`,
+                            });
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Enter the URL where your Python sentiment analysis API is running
+                      </p>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -311,6 +424,19 @@ const SentimentPage = () => {
                             </span>
                           </div>
                         ))}
+                      </div>
+                    </div>
+                    
+                    <div className="bg-secondary/50 p-4 rounded-lg border border-border">
+                      <h3 className="font-semibold mb-3 flex items-center gap-2">
+                        <AlertCircle className="h-5 w-5 text-accent" />
+                        API Status
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <div className={`h-3 w-3 rounded-full ${isLoading ? 'bg-accent animate-pulse' : backendUrl ? 'bg-primary' : 'bg-destructive'}`}></div>
+                        <p className="text-sm">
+                          {isLoading ? 'Fetching data...' : (backendUrl ? 'Ready to connect' : 'No API configured')}
+                        </p>
                       </div>
                     </div>
                   </div>
