@@ -35,58 +35,53 @@ interface PredictionData {
 // Demo data for visualization purposes
 const demoData: Record<string, PredictionData> = {
   'MSFT': {
-    dates: ['2025-04-23', '2025-04-24', '2025-04-25', '2025-04-26', '2025-04-27'],
-    actualPrices: [410.22, 408.67, 412.91, 415.88, 414.30],
-    predictions: [409.72, 407.97, 413.51, 416.28, 413.80],
-    futureDates: ['2025-04-29', '2025-04-30', '2025-05-01', '2025-05-02', '2025-05-05'],
-    futurePredictions: [416.22, 418.67, 422.91, 419.88, 425.30],
-    accuracy: 94.7,
-    sentiment: 0.72
+    dates: ['2025-05-01', '2025-05-02', '2025-05-05', '2025-05-06', '2025-05-07','2025-05-08'],
+    actualPrices: [425.40, 435.28, 436.17, 433.31, 433.35,438.17],
+    predictions: [429.72, 432.97, 432.51, 435.28, 436.80,436.23],
+    futureDates: ['2025-05-08', '2025-05-09'],
+    futurePredictions: [ 422.91, 425.30],
+    accuracy:2.38
+  
   },
   'AAPL': {
-    dates: ['2025-04-23', '2025-04-24', '2025-04-25', '2025-04-26', '2025-04-27'],
-    actualPrices: [178.65, 180.22, 181.10, 180.79, 182.45],
-    predictions: [179.25, 180.82, 180.50, 181.19, 183.05],
-    futureDates: ['2025-04-29', '2025-04-30', '2025-05-01', '2025-05-02', '2025-05-05'],
-    futurePredictions: [183.65, 185.22, 187.10, 186.79, 189.45],
-    accuracy: 93.2,
-    sentiment: 0.84
+    dates: ['2025-05-01', '2025-05-02', '2025-05-05', '2025-05-06', '2025-05-07','2025-05-08'],
+    actualPrices: [213.32, 205.35, 198.89,198.51, 196.25, 197.49],
+    predictions: [200.25, 202.82, 200.50, 203.19, 204.85,197.08 ],
+    futureDates: ['2025-05-08', '2025-05-09'],
+    futurePredictions: [197.82, 194.26],
+    accuracy: 2.47,
   },
   'TSLA': {
-    dates: ['2025-04-23', '2025-04-24', '2025-04-25', '2025-04-26', '2025-04-27'],
-    actualPrices: [171.22, 169.45, 172.90, 175.32, 177.65],
-    predictions: [170.52, 168.95, 173.50, 174.82, 178.25],
-    futureDates: ['2025-04-29', '2025-04-30', '2025-05-01', '2025-05-02', '2025-05-05'],
-    futurePredictions: [179.22, 172.45, 168.90, 171.32, 174.65],
-    accuracy: 90.5,
-    sentiment: 0.48
+    dates: ['2025-05-01', '2025-05-02', '2025-05-05', '2025-05-06', '2025-05-07','2025-05-08'],
+    actualPrices: [287.21, 280.26, 275.35, 276.22, 284.82],
+    predictions: [283.52, 285.95, 284.50, 284.82, 283.25],
+    futureDates: ['2025-05-08', '2025-05-09'],
+    futurePredictions: [284.22, 285.45],
+    accuracy: 4.65,
   },
   'NFLX': {
-    dates: ['2025-04-23', '2025-04-24', '2025-04-25', '2025-04-26', '2025-04-27'],
-    actualPrices: [620.18, 618.45, 624.90, 629.75, 627.30],
-    predictions: [621.28, 617.55, 625.30, 628.85, 626.50],
-    futureDates: ['2025-04-29', '2025-04-30', '2025-05-01', '2025-05-02', '2025-05-05'],
-    futurePredictions: [624.18, 631.45, 637.90, 629.75, 642.30],
-    accuracy: 91.8,
-    sentiment: 0.35
+    dates: ['2025-05-01', '2025-05-02', '2025-05-05', '2025-05-06', '2025-05-07','2025-05-08'],
+    actualPrices: [1133.47, 1156.49, 1134.06, 1137.69, 1155.41,1144.43],
+    predictions: [1127.28, 1134.55, 1138.30, 1140.85, 1145.50,1147.67],
+    futureDates: ['2025-05-08', '2025-05-09'],
+    futurePredictions: [1146.18, 1149.45],
+    accuracy: 4.59,
   },
   'GOOGL': {
-    dates: ['2025-04-23', '2025-04-24', '2025-04-25', '2025-04-26', '2025-04-27'],
-    actualPrices: [170.25, 172.50, 171.75, 173.20, 174.85],
-    predictions: [169.85, 173.10, 171.25, 173.80, 175.25],
-    futureDates: ['2025-04-29', '2025-04-30', '2025-05-01', '2025-05-02', '2025-05-05'],
-    futurePredictions: [173.25, 176.50, 178.75, 176.20, 179.85],
-    accuracy: 92.6,
-    sentiment: 0.62
+    dates: ['2025-05-01', '2025-05-02', '2025-05-05', '2025-05-06', '2025-05-07','2025-05-08'],
+    actualPrices: [161.30, 164.03, 164.21, 163.23, 151.38,154.28],
+    predictions: [169.85, 170.54,173.10, 171.25, 162.3023224 , 160.429],
+    futureDates: ['2025-05-08', '2025-05-09'],
+    futurePredictions: [161.36, 165.50],
+    accuracy: 2.59,
   },
   'AMZN': {
-    dates: ['2025-04-23', '2025-04-24', '2025-04-25', '2025-04-26', '2025-04-27'],
-    actualPrices: [178.35, 180.60, 179.20, 181.45, 183.75],
+    dates: ['2025-05-01', '2025-05-02', '2025-05-05', '2025-05-06', '2025-05-07','2025-05-08'],
+    actualPrices: [190.20, 189.98, 186.35, 185.01, 188.71,192.08],
     predictions: [178.95, 181.20, 178.60, 182.05, 184.35],
-    futureDates: ['2025-04-29', '2025-04-30', '2025-05-01', '2025-05-02', '2025-05-05'],
-    futurePredictions: [182.35, 185.60, 188.20, 186.45, 190.75],
-    accuracy: 91.9,
-    sentiment: 0.55
+    futureDates: ['2025-05-08', '2025-05-09'],
+    futurePredictions: [182.35, 185.60],
+    accuracy: 3.12,
   },
 };
 
@@ -128,9 +123,9 @@ const ResultsPage = () => {
   };
 
   const getAccuracyColorClass = (accuracy: number) => {
-    if (accuracy >= 95) return 'text-success';
-    if (accuracy >= 90) return 'text-primary';
-    if (accuracy >= 80) return 'text-accent';
+    if (accuracy <= 10) return 'text-success';
+    if (accuracy <= 20) return 'text-primary';
+    if (accuracy >= 20) return 'text-accent';
     return 'text-destructive';
   };
   
@@ -168,7 +163,7 @@ const ResultsPage = () => {
           <div className="text-center">
             <div className="h-16 w-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <h2 className="text-xl font-medium gradient-text">Processing Prediction Results</h2>
-            <p className="text-muted-foreground mt-2">Integrating sentiment analysis with ARIMA-LSTM models...</p>
+            <p className="text-muted-foreground mt-2">Integrating sentiment analysis with LSTM models...</p>
           </div>
         </main>
         <Footer />
@@ -227,7 +222,6 @@ const ResultsPage = () => {
                   </div>
                   
                   <div className="px-3 py-1 rounded-full bg-primary/20 text-primary text-sm font-medium">
-                    R²: {predictionData.accuracy}%
                   </div>
                 </div>
               </div>
@@ -390,7 +384,7 @@ const ResultsPage = () => {
                   <h2 className="text-xl font-semibold mb-4">Model Performance</h2>
                   
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-muted-foreground">R² Score (Accuracy)</span>
+                    <span className="text-sm font-medium text-muted-foreground">MAPE Score (Accuracy)</span>
                     <span className={`text-lg font-bold ${getAccuracyColorClass(predictionData.accuracy)}`}>
                       {predictionData.accuracy}%
                     </span>
@@ -411,8 +405,8 @@ const ResultsPage = () => {
                     <div className="flex items-start gap-2">
                       <Info className="h-4 w-4 mt-0.5 min-w-4 text-muted-foreground" />
                       <p>
-                        The R² score indicates how well the model's predictions match actual historical data.
-                        Our hybrid model integrates sentiment analysis with traditional prediction methods for improved accuracy.
+                      A lower Mean Absolute Percentage Error (MAPE) score indicates a more accurate model, 
+                      as MAPE quantifies the average percentage difference between actual and predicted values.
                       </p>
                     </div>
                   </div>
@@ -446,7 +440,7 @@ const ResultsPage = () => {
                   
                   <div className="mt-6 text-sm text-muted-foreground">
                     <p>
-                      This prediction incorporates sentiment analysis (score: {Math.round(predictionData.sentiment * 100)}%) from news and social media as a key input to the ARIMA-LSTM hybrid model.
+                      This prediction incorporates sentiment analysis (score: {Math.round(predictionData.sentiment * 100)}%) from news and social media as a key input to the LSTM hybrid model.
                     </p>
                   </div>
                 </Card>
